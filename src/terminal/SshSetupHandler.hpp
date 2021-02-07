@@ -11,7 +11,8 @@ class SshSetupHandler {
                          const string &jumphost, int jport, bool kill,
                          int vlevel, const string &cmd_prefix,
                          const string &serverFifo,
-                         const std::vector<std::string>& ssh_options);
+                         const std::vector<std::string>& ssh_options,
+                         string &sshBuffer);
 };
 }  // namespace et
 #endif  // __ET_SSH_SETUP_HANDLER__

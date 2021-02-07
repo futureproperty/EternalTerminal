@@ -25,7 +25,8 @@ string SshSetupHandler::SetupSsh(const string& user, const string& host,
                                  const string& jumphost, int jport, bool kill,
                                  int vlevel, const string& cmd_prefix,
                                  const string& serverFifo,
-                                 const std::vector<std::string>& ssh_options) {
+                                 const std::vector<std::string>& ssh_options, 
+                                 string &sshBuffer) {
   string clientTerm("xterm-256color");
   auto envString = getenv("TERM");
   if (envString != NULL) {
@@ -66,9 +67,9 @@ string SshSetupHandler::SetupSsh(const string& user, const string& host,
   }
 
   ssh_args.push_back(SSH_SCRIPT_DST);
-
-  auto sshBuffer = SubprocessToStringInteractive("ssh", ssh_args);
-
+  if (sshBuffer.length() <= 0) {
+    sshBuffer = SubprocessToStringInteractive("ssh", ssh_args);
+  }
   try {
     if (sshBuffer.length() <= 0) {
       // Ssh failed

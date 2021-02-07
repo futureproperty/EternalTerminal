@@ -75,6 +75,9 @@ int main(int argc, char** argv) {
         ("f,forward-ssh-agent", "Forward ssh-agent socket")  //
         ("ssh-socket", "The ssh-agent socket to forward",
          cxxopts::value<std::string>())  //
+        ("pass",
+         "pass ssh buffer",
+         cxxopts::value<std::string>()->default_value(""))  //
         ("telemetry",
          "Allow et to anonymously send errors to guide future improvements",
          cxxopts::value<bool>()->default_value("true"))  //
@@ -242,11 +245,12 @@ int main(int argc, char** argv) {
     if (result.count("ssh-option")) {
       ssh_options = result["ssh-option"].as<std::vector<string>>();
     }
+    string sshBuffer = result["pass"].as<string>();
     string idpasskeypair = SshSetupHandler::SetupSsh(
         username, destinationHost, host_alias, destinationPort, jumphost, jport,
         result.count("x") > 0, result["verbose"].as<int>(),
         result.count("prefix") ? result["prefix"].as<string>() : "", serverFifo,
-        ssh_options);
+        ssh_options, sshBuffer);
 
     string id = "", passkey = "";
     // Trim whitespace
